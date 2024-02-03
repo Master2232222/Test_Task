@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+    <style type="text/css">
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body{
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #8b00ff;
+        }
+        .container{
+            width: 500px;
+            height: 450px;
+            position: relative;
+            background: #fff;
+            overflow: hidden;
+            box-shadow: 0px 1px 18px #000;
+        }
+        .btnBox{
+            width: 220px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px auto;
+            position: relative;
+            box-shadow: 0px 0px 10px  #00ff00;
+            border-radius: 30px;
+        }
+        .btn{
+            padding: 10px 30px;
+            border-radius: 3px;
+            background: transparent;
+            cursor: pointer;
+            border: 0;
+            outline: none;
+            z-index: 1;
+        }
+        .btns{
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #00ff00;
+            width: 50%;
+            height: 100%;
+            border-radius: 30px;
+            transition: .5s;
+        }
+        div{
+            width: 100%;
+            padding: 0px 50px;
+            position: absolute;
+            transition: .5s;
+        }
+        div input[type="text"]{
+            width: 100%;
+            padding: 12px 10px;
+            background: #fff;
+            border: 1px solid #000;
+            outline: none;
+            margin: 8px 0;
+        }
+        div input[type="submit"]{
+            width: 100%;
+            padding: 12px;
+            font-size: 1em;
+            cursor: pointer;
+            background: #00ff00;
+            border: 0;
+            margin: 10px 0;
+            color: #fff;
+        }
+        h1{
+            margin: 0px 0px 10px 0px;
+            text-align: center;
+        }
+        #signIn{
+            left: 0px;
+        }
+        #signUp{
+            left: 500px;
+        }
+    </style>
+    <div class="container">
+        <div class="btnBox">
+            <div class="btns"></div>
+            <button class="btn" onclick="login()">Sign_in</button>
+            <button class="btn" onclick="sig()">Sign_Up</button>
+        </div>
+        <div id="signIn">
+            <h1>Вход в аккаунт</h1>
+            <input id="rs1" name="электронная почта" type="text" placeholder="Электронная почта">
+            <input id="rs2" name="пароль" type="text" placeholder="Пароль">
+            <input type="checkbox"><span>Запомнить меня</span>
+            <input onclick="rus()" type="submit" value="Войти">
+            <br/>
+            <label id="rs"></label>
+        </div>
+        <div id="signUp">
+            <h1>Регистрация</h1>
+            <input id="r1" name="login" type="text" placeholder="Логин">
+            <input id="r2" type="text" placeholder="Электронная почта">
+            <input id="r3" type="text" placeholder="Пароль">
+            <input onclick="rus1()" type="submit" value="Зарегистрироваться">
+            <br/>
+            <label id="r"></label>
+        </div>
+    </div>
+<script type="text/javascript">
+    let btn = document.querySelector('.btns');//Находим элемент с классом "btns" и присваиваем его переменной btn.Это контейнер в котором находятся кнопки входа и регистрации
+    let x = document.querySelector('#signIn');//Находим элемент с id "signIn" и присваиваем его переменной x.Это кнопка входа.
+    let y = document.querySelector('#signUp');//Находим элемент с id "signUp" и присваиваем его переменной y. Это кнопка регистрации.
+    function login(){//Это функция которая будет вызываться при нажатие на кнопку входа.Нужна чтобы сделать анимацию.Она изменяет значение свойства left
+        btn.style.left='0px';
+        x.style.left='0px';
+        y.style.left='500px'
+    }
+    function sig(){//Это функция которая будет вызываться при нажатие на кнопку регистрации.Нужна чтобы сделать анимацию.Она изменяет значение свойства left
+        btn.style.left='110px'
+        x.style.left='-500px';
+        y.style.left='0px'
+    }
+</script>
+<script>
+function rus1(){
+    let login = $('#r1').val()// Получаем значение, введенное пользователем в поле "логин"
+    let email = $('#r2').val()// Получаем значение, введенное пользователем в поле "электронная почта"
+    let password = $('#r3').val()// Получаем значение, введенное пользователем в поле "пароль"
+    $.ajax({// Отправляем AJAX запрос на сервер
+        type: 'post',// Указываем тип запроса - POST
+        url: '/registor',// Указываем URL-адрес, куда отправлять запрос
+        data: // Указываем данные, которые нужно отправить на сервер
+            {login : login,
+             email : email,
+             password : password,},
+        success: function(vals) {// Обработчик успешного выполнения запроса
+            console.log(vals); // Выводим полученные данные в консоль
+            $('#r').text(vals)// Устанавливаем текстовое содержимое элемента с id "r" равным полученным данным
+        }
+    });
+}
+</script>
+<script>
+function rus(){
+    let target_email = $('#rs1').val()// Получаем значение электронной почты из элемента с id "rs1"
+    let target_password = $('#rs2').val()// Получаем значение пароля из элемента с id "rs2"
+    $.ajax({// Отправляем AJAX запрос на сервер
+        type: 'post',// Указываем тип запроса как "post"
+        url: '/check_user',// Указываем URL, на который отправляется запрос
+        data:// Указываем данные, которые нужно отправить на сервер
+            {target_email : target_email,
+             target_password : target_password,},
+        success: function(vals) {// Обработчик успешного выполнения запроса
+            console.log(vals);// Выводим полученные данные в консоль
+            $('#rs').text(vals)// Устанавливаем текстовое содержимое элемента с id "rs" равным полученным данным
+        }
+    });
+}
+</script>
+</body>
+</html>
